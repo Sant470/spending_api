@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180205110236) do
+ActiveRecord::Schema.define(version: 20180206203849) do
 
   create_table "card_type_mcc_codes", force: :cascade do |t|
     t.integer "card_type_id", null: false
@@ -32,20 +32,22 @@ ActiveRecord::Schema.define(version: 20180205110236) do
     t.date "expire_date", null: false
     t.integer "ccv", null: false
     t.integer "card_type_id", null: false
-    t.integer "employees_id"
+    t.integer "employee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["card_type_id"], name: "index_cards_on_card_type_id"
-    t.index ["employees_id"], name: "index_cards_on_employees_id"
+    t.index ["employee_id"], name: "index_cards_on_employee_id"
   end
 
   create_table "employees", force: :cascade do |t|
-    t.string "uniqe_id", null: false
+    t.string "unique_id", null: false
     t.string "name", null: false
     t.string "mobile_no"
     t.string "email", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "password_digest"
+    t.boolean "admin", default: false
   end
 
   create_table "financial_years", force: :cascade do |t|
@@ -86,19 +88,17 @@ ActiveRecord::Schema.define(version: 20180205110236) do
   end
 
   create_table "transactions", force: :cascade do |t|
-    t.string "mobile_no", null: false
     t.integer "employee_id", null: false
-    t.integer "card_number", null: false
-    t.string "merchant_name", null: false
     t.datetime "transaction_time", null: false
     t.integer "amount", null: false
     t.boolean "status", null: false
-    t.string "mcc_code", null: false
-    t.integer "card_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["card_id"], name: "index_transactions_on_card_id"
+    t.integer "cards_id"
+    t.integer "mcc_code_id"
+    t.index ["cards_id"], name: "index_transactions_on_cards_id"
     t.index ["employee_id"], name: "index_transactions_on_employee_id"
+    t.index ["mcc_code_id"], name: "index_transactions_on_mcc_code_id"
   end
 
 end

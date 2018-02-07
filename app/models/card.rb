@@ -9,4 +9,8 @@ class Card < ApplicationRecord
   def validate_expire_date
     raise Exception "expire date could not be in past" if self.expire_date <= Date.today
   end
+
+  def self.available_cards
+    Card.where(employee_id:nil)
+  end
 end

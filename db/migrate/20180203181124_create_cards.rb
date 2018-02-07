@@ -5,7 +5,7 @@ class CreateCards < ActiveRecord::Migration[5.1]
       t.date :expire_date, null: false
       t.integer :ccv, null: false
       t.references :card_type, foreign_key: true, null: false
-      t.references :employees, foreign_key: true
+      t.references :employee, foreign_key: true
       t.timestamps
     end
   end
