@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get '/card_availability' => 'home#card_availability'
     post  '/assign_card' => 'home#assign_card'
     get '/employee/:id/transactions' => 'home#employee_transactions'
+    get '/tax_exemptions' => 'home#employee_tax_exmptions'
     get '/price' =>'booking#price'
   end
 end

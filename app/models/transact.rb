@@ -23,13 +23,15 @@ class Transact < ApplicationRecord
   end
 
   def create_spending
-    financial_year = FinancialYear.get_financial_year self.transaction_time
-    spend = Spending.new
-    spend.amount = self.amount
-    spend.months_limit = financial_year.months_limits.where(month: self.transaction_time.month-1, mcc_code: self.mcc_code).first
-    spend.employee = self.employee
-    spend.transact = self
-    spend.save!
+    if self.status
+      financial_year = FinancialYear.get_financial_year self.transaction_time
+      spend = Spending.new
+      spend.amount = self.amount
+      spend.months_limit = financial_year.months_limits.where(month: self.transaction_time.month-1, mcc_code: self.mcc_code).first
+      spend.employee = self.employee
+      spend.transact = self
+      spend.save!
+    end
   end
 
   def merchant_name

@@ -1,7 +1,8 @@
 class Employee < ApplicationRecord
   has_secure_password
   has_one :card
-  has_many :transacts
+  has_many :transacts, dependent: :destroy
+  has_many :spendings, dependent: :destroy
   validates :name, presence: true
   validates :unique_id, uniqueness: true, presence: true
   validates :email, uniqueness: true, presence: true, format: { with:  /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i, message: "invalid email format", on: :create}
@@ -19,6 +20,11 @@ class Employee < ApplicationRecord
 
   def card_number
     self.card.card_number
+  end
+
+  #return total spending for a given months_limit
+  def month_wise_spending months_limit_id
+    spendings.where(months_limit_id: months_limit_id).sum{|s| s.amount}
   end
 
 end
