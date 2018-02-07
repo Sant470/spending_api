@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180206203849) do
+ActiveRecord::Schema.define(version: 20180207191046) do
 
   create_table "card_type_mcc_codes", force: :cascade do |t|
     t.integer "card_type_id", null: false
@@ -87,7 +87,7 @@ ActiveRecord::Schema.define(version: 20180206203849) do
     t.index ["transaction_id"], name: "index_spendings_on_transaction_id"
   end
 
-  create_table "transactions", force: :cascade do |t|
+  create_table "transacts", force: :cascade do |t|
     t.integer "employee_id", null: false
     t.datetime "transaction_time", null: false
     t.integer "amount", null: false
@@ -96,9 +96,9 @@ ActiveRecord::Schema.define(version: 20180206203849) do
     t.datetime "updated_at", null: false
     t.integer "cards_id"
     t.integer "mcc_code_id"
-    t.index ["cards_id"], name: "index_transactions_on_cards_id"
-    t.index ["employee_id"], name: "index_transactions_on_employee_id"
-    t.index ["mcc_code_id"], name: "index_transactions_on_mcc_code_id"
+    t.index ["cards_id"], name: "index_transacts_on_cards_id"
+    t.index ["employee_id"], name: "index_transacts_on_employee_id"
+    t.index ["mcc_code_id"], name: "index_transacts_on_mcc_code_id"
   end
 
 end

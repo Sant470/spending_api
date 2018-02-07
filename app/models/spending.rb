@@ -2,7 +2,7 @@ class Spending < ApplicationRecord
   validates :amount, presence: true
   before_save :validate_positiveness
 
-  belongs_to :transact, class_name: "Transaction"
+  belongs_to :transact, foreign_key: 'transaction_id'
   belongs_to :months_limit
   belongs_to :employee
 

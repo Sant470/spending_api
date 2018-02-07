@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_action :authenticate_request
-  before_action :check_admin, only: [:card_availability, :assign_card]
+  before_action :check_admin, only: [:card_availability, :assign_card, :employee_transactions]
 
   def card_availability
     available_cards = Card.available_cards
@@ -33,11 +33,6 @@ class HomeController < ApplicationController
       render json: {message: e.message}, status: :bad_request
     end
   end
-
-  
-
-
-
   private
 
    def assign_card_params

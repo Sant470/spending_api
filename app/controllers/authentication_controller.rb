@@ -16,7 +16,7 @@ class AuthenticationController < ApplicationController
     if employee
       render json: payload(employee), status: :ok
     else
-      render json: {message: "invalid email or password"}
+      render json: {message: "invalid email or password"}, status: :unauthorized
     end
   end
 
