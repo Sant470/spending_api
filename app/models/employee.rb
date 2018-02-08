@@ -15,11 +15,11 @@ class Employee < ApplicationRecord
   end
 
   def transactions
-    self.as_json(only: [:id, :mobile_no], methods: [:card_number], include: {transacts: {only: [:id, :transaction_time, :amount, :status], methods: [:merchant_name]}})
+    self.as_json(only: [:id, :mobile_no, :name], methods: [:card_number], include: {transacts: {only: [:id, :transaction_time, :amount, :status], methods: [:merchant_name]}})
   end
 
   def card_number
-    self.card.card_number
+    self.card.try(:card_number)
   end
 
   #return total spending for a given months_limit

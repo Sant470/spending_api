@@ -1,6 +1,6 @@
 class HomeController < ApplicationController
   before_action :authenticate_request
-  before_action :check_admin, only: [:card_availability, :assign_card, :employee_transactions]
+  before_action :check_admin, only: [:card_availability, :assign_card, :employee_transactions, :tax_exemptions]
   include HomeConcern
 
   def card_availability
@@ -37,15 +37,38 @@ class HomeController < ApplicationController
 
   def employee_tax_exmptions
     begin
+      current_financial_year = FinancialYear.get_financial_year Time.now
       transactions = @employee.transactions
-      tax_exemptions = prepare_tax_exemption_response
-      render json: {transaction_details: transactions, tax_exemptions: tax_exemptions}, status: :ok
+      tax_exemptions = prepare_tax_exemption_response @employee, current_financial_year
+      transactions[:tax_exemption] = tax_exemptions
+      render json: {transaction_details: transactions}, status: :ok
     rescue Exception => e
       render json: {meesage: e.message}, status: :bad_request
     end
   end
 
-  
+  def tax_exemptions
+    begin
+      start_date = Date.parse("01-01-#{params[:year]}")
+      last_date = Date.parse("31-01-#{params[:year]}")
+      financial_year = FinancialYear.where(["start_date <= ? and end_date >= ?", start_date, last_date])
+      response = []
+      employees = Employee.all
+      employees.each do |employee|
+        temp = {}
+        temp[:id] = employee.id
+        temp[:name] = employee.name
+        temp[:tax_exemption] = prepare_tax_exemption_response employee, financial_year
+        response << temp
+      end
+      render json: {employee_tax_exmptions: response}
+    rescue Exception => e
+      render json: {message: e.message}, status: :bad_request
+    end
+  end
+
+
+
   private
 
    def assign_card_params
@@ -54,6 +77,10 @@ class HomeController < ApplicationController
 
     def employee_transaction_params
       params.permit(:id)
+    end
+
+    def tax_exemption_params
+      params.permit(:year)
     end
 
     def check_admin
