@@ -50,7 +50,7 @@ class HomeController < ApplicationController
   def tax_exemptions
     begin
       start_date = Date.parse("01-01-#{params[:year]}")
-      last_date = Date.parse("31-01-#{params[:year]}")
+      last_date = Date.parse("31-12-#{params[:year]}")
       financial_year = FinancialYear.where(["start_date <= ? and end_date >= ?", start_date, last_date])
       response = []
       employees = Employee.all
@@ -61,7 +61,7 @@ class HomeController < ApplicationController
         temp[:tax_exemption] = prepare_tax_exemption_response employee, financial_year
         response << temp
       end
-      render json: {employee_tax_exmptions: response}
+      render json: {employee_tax_exmptions: response}, status: :ok
     rescue Exception => e
       render json: {message: e.message}, status: :bad_request
     end
